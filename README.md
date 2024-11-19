@@ -91,7 +91,7 @@ Berikut adalah langkah-langkah ringkas untuk menambahkan Drawer Menu, membuat fo
 - Tambahkan header untuk mempercantik drawer.
 - Masukkan Drawer ke halaman yang diinginkan dengan menambahkannya sebagai parameter drawer dalam Scaffold.
   
-2. Menambahkan Form dan Elemen Input
+2. Menambahkan Form dan Elemen Inputhttps://github.com/nabilahdevina/cutieshop-mobile/security
 - Buat file baru productentry_form.dart di direktori lib.
 - Buat kerangka dasar halaman form dengan desain material, termasuk layout yang dapat di-scroll, styling dasar, dan drawer.
 - Tambahkan key (_formKey) untuk form agar dapat mengontrol form state, validasi, dan penyimpanan.
