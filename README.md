@@ -107,23 +107,29 @@ Berikut adalah langkah-langkah ringkas untuk menambahkan Drawer Menu, membuat fo
 TUGAS 9
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 1. Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu?
+
 Membuat model untuk pengambilan atau pengiriman data JSON penting karena model menyediakan struktur yang jelas untuk memetakan data JSON ke dalam objek aplikasi, memastikan format data sesuai, serta memudahkan validasi dan debugging. Tanpa model, kita masih bisa bekerja dengan map atau list, tetapi kode menjadi sulit dipahami, rawan error runtime, dan kurang terjamin konsistensinya. Dengan model, tipe data menjadi eksplisit, meningkatkan keandalan dan kemudahan pemeliharaan aplikasi.
 
 2. Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini
+
 Library http di Flutter digunakan untuk mengelola pengiriman dan penerimaan data melalui protokol HTTP. Dengan library ini, aplikasi dapat melakukan berbagai jenis permintaan HTTP, seperti GET, POST, PUT, dan DELETE, ke server. Dalam konteks tugas ini, http digunakan untuk menjembatani komunikasi antara aplikasi dan server Django, baik untuk mengambil data dari server maupun mengirim data, seperti input formulir pengguna.
 
 3. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
 CookieRequest adalah kelas yang digunakan untuk mengelola permintaan HTTP dengan autentikasi berbasis cookie, memudahkan pengiriman permintaan HTTP yang menyertakan cookie untuk menjaga sesi pengguna tetap aktif. Kelas ini juga menyediakan metode untuk login, logout, dan mengirim permintaan HTTP lainnya dengan cookie yang disimpan. Agar dapat diakses oleh seluruh komponen aplikasi, instance CookieRequest perlu dibagikan menggunakan Provider, memungkinkan semua komponen mengakses sesi aktif pengguna dan melakukan operasi yang memerlukan autentikasi, seperti mengambil atau mengirim data ke server, secara konsisten dan benar di seluruh aplikasi.
 
 4. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+
 Pengguna mengisi form di aplikasi Flutter, seperti detail menu (URL gambar, nama, harga, status, dan deskripsi), yang kemudian divalidasi sebelum dikirim ke server. Setelah validasi, data dikirim ke server melalui permintaan HTTP POST menggunakan library seperti http atau pbp_django_auth dalam format JSON, melalui CookieRequest. Server menerima dan memproses data sesuai logika bisnis, menyimpannya di database, dan mengirimkan respons dalam format JSON yang berisi status dan data relevan. Aplikasi Flutter kemudian menerima respons tersebut, memprosesnya, dan menampilkan data yang diterima di UI, seperti daftar menu yang diperbarui.
 
 5. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
 - Login: Pengguna mengisi username dan password di aplikasi Flutter, kemudian mengirimkan permintaan ke server Django untuk verifikasi. Jika verifikasi berhasil, server mengembalikan cookie sesi yang disimpan di Flutter menggunakan CookieRequest, menandakan login berhasil.
 - Register: Pengguna mengisi data akun melalui formulir di Flutter, kemudian data dikirim ke endpoint Django untuk pembuatan akun baru. Jika proses berhasil, akun baru akan disimpan di database.
 - Logout: Pengguna menekan tombol logout di Flutter, yang mengirimkan permintaan ke server Django untuk mengakhiri sesi. Server akan menghapus cookie sesi, sementara Flutter menghapus status login pengguna.
 
 6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
 Bagian 1: Setup di Django
 - Buat Aplikasi Autentikasi: Buat aplikasi Django bernama authentication dan tambahkan ke INSTALLED_APPS di settings.py.
 - Instal dan Konfigurasi CORS: Instal django-cors-headers, tambahkan ke INSTALLED_APPS dan MIDDLEWARE, serta konfigurasikan CORS di settings.py untuk mendukung sesi lintas platform.
