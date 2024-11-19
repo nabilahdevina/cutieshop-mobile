@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cutieshop/screens/menu.dart';
-// Impor halaman ProductEntryFormPage jika sudah dibuat
 import 'package:cutieshop/screens/productentry_form.dart';
+import 'package:cutieshop/screens/list_productentry.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -66,10 +66,20 @@ class LeftDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ProductEntryFormPage(),
-                ),
-              );
+                ));
             },
           ),
+          ListTile(
+          leading: const Icon(Icons.local_attraction_outlined),
+          title: const Text('Lihat Product'),
+          onTap: () {
+              // Route menu ke halaman product
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProductEntryPage()),
+        );
+    },
+),
         ],
       ),
     );
