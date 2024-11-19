@@ -60,7 +60,7 @@ Saya menggunakan beberapa elemen input Flutter untuk mengumpulkan informasi prod
 - TextFormField untuk Rating: Untuk memasukkan rating produk dalam angka.
 - TextFormField untuk Pairing: Untuk memasukkan informasi tentang pairing produk.
 
-Selain itu, ada beberapa elemen input Flutter lainnya yang tidak digunakan dalam formulir ini, seperti:
+Selain itu, ada beberapa elemen input Flutter lainnya yang tidak digunakan dalam formulir ini, seperti :
 - DropdownButtonFormField: Untuk memilih nilai dari daftar dropdown.
 - CheckboxListTile: Untuk pilihan ya/tidak menggunakan kotak centang.
 - RadioListTile: Untuk memilih satu opsi dari beberapa pilihan.
@@ -103,6 +103,68 @@ Berikut adalah langkah-langkah ringkas untuk menambahkan Drawer Menu, membuat fo
   
 4. Menambahkan Navigasi pada Tombol
 - Pastikan tombol dalam widget InkWell dapat melakukan navigasi ke halaman yang sesuai dengan route yang diinginkan.
+
+TUGAS 9
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu?
+Membuat model untuk pengambilan atau pengiriman data JSON penting karena model menyediakan struktur yang jelas untuk memetakan data JSON ke dalam objek aplikasi, memastikan format data sesuai, serta memudahkan validasi dan debugging. Tanpa model, kita masih bisa bekerja dengan map atau list, tetapi kode menjadi sulit dipahami, rawan error runtime, dan kurang terjamin konsistensinya. Dengan model, tipe data menjadi eksplisit, meningkatkan keandalan dan kemudahan pemeliharaan aplikasi.
+
+2. Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini
+Library http di Flutter digunakan untuk mengelola pengiriman dan penerimaan data melalui protokol HTTP. Dengan library ini, aplikasi dapat melakukan berbagai jenis permintaan HTTP, seperti GET, POST, PUT, dan DELETE, ke server. Dalam konteks tugas ini, http digunakan untuk menjembatani komunikasi antara aplikasi dan server Django, baik untuk mengambil data dari server maupun mengirim data, seperti input formulir pengguna.
+
+3. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+CookieRequest adalah kelas yang digunakan untuk mengelola permintaan HTTP dengan autentikasi berbasis cookie, memudahkan pengiriman permintaan HTTP yang menyertakan cookie untuk menjaga sesi pengguna tetap aktif. Kelas ini juga menyediakan metode untuk login, logout, dan mengirim permintaan HTTP lainnya dengan cookie yang disimpan. Agar dapat diakses oleh seluruh komponen aplikasi, instance CookieRequest perlu dibagikan menggunakan Provider, memungkinkan semua komponen mengakses sesi aktif pengguna dan melakukan operasi yang memerlukan autentikasi, seperti mengambil atau mengirim data ke server, secara konsisten dan benar di seluruh aplikasi.
+
+4. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+Pengguna mengisi form di aplikasi Flutter, seperti detail menu (URL gambar, nama, harga, status, dan deskripsi), yang kemudian divalidasi sebelum dikirim ke server. Setelah validasi, data dikirim ke server melalui permintaan HTTP POST menggunakan library seperti http atau pbp_django_auth dalam format JSON, melalui CookieRequest. Server menerima dan memproses data sesuai logika bisnis, menyimpannya di database, dan mengirimkan respons dalam format JSON yang berisi status dan data relevan. Aplikasi Flutter kemudian menerima respons tersebut, memprosesnya, dan menampilkan data yang diterima di UI, seperti daftar menu yang diperbarui.
+
+5. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+- Login: Pengguna mengisi username dan password di aplikasi Flutter, kemudian mengirimkan permintaan ke server Django untuk verifikasi. Jika verifikasi berhasil, server mengembalikan cookie sesi yang disimpan di Flutter menggunakan CookieRequest, menandakan login berhasil.
+- Register: Pengguna mengisi data akun melalui formulir di Flutter, kemudian data dikirim ke endpoint Django untuk pembuatan akun baru. Jika proses berhasil, akun baru akan disimpan di database.
+- Logout: Pengguna menekan tombol logout di Flutter, yang mengirimkan permintaan ke server Django untuk mengakhiri sesi. Server akan menghapus cookie sesi, sementara Flutter menghapus status login pengguna.
+
+6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+Bagian 1: Setup di Django
+- Buat Aplikasi Autentikasi: Buat aplikasi Django bernama authentication dan tambahkan ke INSTALLED_APPS di settings.py.
+- Instal dan Konfigurasi CORS: Instal django-cors-headers, tambahkan ke INSTALLED_APPS dan MIDDLEWARE, serta konfigurasikan CORS di settings.py untuk mendukung sesi lintas platform.
+- Tambahkan Host yang Diizinkan: Tambahkan 10.0.2.2 ke ALLOWED_HOSTS untuk akses dari emulator Android.
+- Buat Endpoint Login dan Register: Tambahkan fungsi login dan register di views.py untuk memverifikasi kredensial dan menangani pendaftaran.
+- Tambahkan Routing: Buat routing di urls.py untuk endpoint login dan register.
+
+Bagian 2: Setup di Flutter
+- Instal Library: Instal provider dan pbp_django_auth untuk autentikasi.
+- Modifikasi Root Widget: Tambahkan CookieRequest sebagai provider di main.dart.
+- Buat Halaman Login dan Register: Tambahkan form login dan registrasi, kirim data ke endpoint Django dan tampilkan respons.
+
+Bagian 3: Pembuatan Model Kustom
+- Gunakan Quicktype: Salin data JSON dari Django dan gunakan Quicktype untuk menghasilkan model Dart.
+- Tambah Model ke Flutter: Buat file model Dart di folder models/.
+
+Bagian 4: Menambahkan Dependensi HTTP
+- Instal Paket HTTP: Tambahkan dependensi HTTP untuk komunikasi dengan server Django.
+- Izinkan Akses Internet: Tambahkan izin akses internet di AndroidManifest.xml.
+
+Bagian 5: Fetch Data dari Django
+- Buat Halaman Daftar Produk: Buat halaman untuk menampilkan data produk dari endpoint Django menggunakan FutureBuilder.
+- Fungsi Navigasi: Tambahkan navigasi ke halaman produk di left_drawer.dart dan tracker_card.dart.
+
+Bagian 6: Menambahkan Fitur Form di Django
+- Buat View untuk Menambah Produk: Tambahkan fungsi untuk menangani permintaan POST dan menyimpan data produk ke database.
+- Tambah Routing untuk Endpoint: Tambahkan path baru untuk mengakses view create_product_flutter.
+
+Bagian 7: Integrasi Form dengan Flutter
+- Hubungkan CookieRequest: Gunakan CookieRequest di form Flutter untuk mengirim data JSON.
+- Modifikasi Tombol Submit: Kirim data ke endpoint Django menggunakan POST dan tampilkan respons sukses/gagal.
+- Quick Fix dan Uji Aplikasi: Perbaiki masalah impor library dan coba tambah data melalui aplikasi.
+
+Bagian 8: Implementasi Fitur Logout
+- Buat View untuk Logout: Tambahkan fungsi logout di authentication/views.py untuk menghapus sesi pengguna.
+- Tambah Routing untuk Logout: Tambahkan path baru untuk logout di authentication/urls.py
+
+
+
+
+
 
 
 
