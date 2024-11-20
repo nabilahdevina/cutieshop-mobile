@@ -13,20 +13,20 @@ class ProductEntryPage extends StatefulWidget {
 }
 
 class _ProductEntryPageState extends State<ProductEntryPage> {
-  Future<List<ProductEntry>> fetchItem(CookieRequest request) async {
+  Future<List<ProductEntry>> fetchProduct(CookieRequest request) async {
     final response = await request.get('http://127.0.0.1:8000/json/');
     
     // Melakukan decode response menjadi bentuk json
     var data = response;
     
-    // Melakukan konversi data json menjadi object ItemEntry
-    List<ProductEntry> listItem = [];
+    // Melakukan konversi data json menjadi object ProductEntry
+    List<ProductEntry> listProduct = [];
     for (var d in data) {
       if (d != null) {
-        listItem.add(ProductEntry.fromJson(d));
+        listProduct.add(ProductEntry.fromJson(d));
       }
     }
-    return listItem;
+    return listProduct;
   }
 
   @override
@@ -35,13 +35,13 @@ class _ProductEntryPageState extends State<ProductEntryPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF9BF),
       appBar: AppBar(
-        title: const Text('Item Entry List'),
+        title: const Text('Product Entry List'),
         backgroundColor: const Color.fromARGB(255, 162, 2, 90),
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchItem(request),
+        future: fetchProduct(request),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
@@ -50,7 +50,7 @@ class _ProductEntryPageState extends State<ProductEntryPage> {
               return const Column(
                 children: [
                   Text(
-                    'Belum ada data item pada mental health tracker.',
+                    'Belum ada data product pada mental health tracker.',
                     style: TextStyle(fontSize: 20, color: Color(0xff59A5D8)),
                   ),
                   SizedBox(height: 8),
